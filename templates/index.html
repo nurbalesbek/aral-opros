@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title id="title">Опрос посетителей Геопарка Арал</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    /* Общие стили для страницы */
+    body {
+      background-color: #f7f8fa;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Контейнер для опроса */
+    .survey-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 40px auto;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    /* Заголовок опроса */
+    h2 {
+      text-align: center;
+      color: #5e60ce;
+      margin-bottom: 30px;
+      font-size: 1.4em;
+    }
+
+    /* Форматирование полей опроса */
+    fieldset {
+      border: none;
+      margin-bottom: 25px;
+      padding: 0;
+    }
+
+    legend {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    /* Стиль для вопросов с вариантами ответа */
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .options input[type="radio"] {
+      display: none;
+    }
+
+    .options label {
+      flex: 1;
+      background: #f1f3f5;
+      padding: 12px 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: background .3s, border-color .3s;
+    }
+
+    .options input[type="radio"]:checked + label {
+      background: #5e60ce;
+      color: #fff;
+      border-color: #5e60ce;
+    }
+
+    /* Стиль для полей выбора */
+    select,
+    textarea,
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    /* Настройки для textarea */
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* Стиль кнопки */
+    button {
+      background-color: #5e60ce;
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #4ea8de;
+    }
+
+    /* Медиазапрос для мобильных устройств */
+    @media screen and (max-width: 768px) {
+      .survey-container {
+        padding: 15px;
+      }
+
+      h2 {
+        font-size: 1.2em;
+      }
+
+      .options label {
+        font-size: 0.9em;
+      }
+
+      button {
+        font-size: 16px;
+        padding: 14px;
+      }
+    }
+
+    /* Стиль для кнопки смены языка внутри контейнера */
+    .language-switcher {
+      position: absolute;
+      top: 5px;
+      right: 0px;
+      background: #5e60ce;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .language-switcher:hover {
+      background: #4ea8de;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="survey-container">
+    <!-- Кнопка смены языка внутри контейнера -->
+    <button class="language-switcher" onclick="switchLanguage()">EN</button>
+
+    <h2 id="survey-title">Опрос посетителей Геопарка Арал</h2>
+    <form method="POST" action="/submit">
+
+      <fieldset>
+        <legend id="q1">1. Откуда вы? Страна</legend>
+        <select id="country" name="country" required>
+          <option value="" disabled selected>Выберите страну</option>
+          <option id="country_az" value="Азербайджан">Азербайджан</option>
+          <option id="country_am" value="Армения">Армения</option>
+          <option id="country_by" value="Беларусь">Беларусь</option>
+          <option id="country_kz" value="Казахстан" selected>Казахстан</option> <!-- Установлен Казахстан по умолчанию -->
+          <option id="country_kg" value="Кыргызстан">Кыргызстан</option>
+          <option id="country_md" value="Молдова">Молдова</option>
+          <option id="country_ru" value="Россия">Россия</option>
+          <option id="country_tj" value="Таджикистан">Таджикистан</option>
+          <option id="country_tm" value="Туркменистан">Туркменистан</option>
+          <option id="country_uz" value="Узбекистан">Узбекистан</option>
+          <option id="country_ua" value="Украина">Украина</option>
+          <option id="country_ee" value="Эстония">Эстония</option>
+          <option id="country_lv" value="Латвия">Латвия</option>
+          <option id="country_lt" value="Литва">Литва</option>
+          <option id="country_ge" value="Грузия">Грузия</option>
+          <option id="country_other" value="Другое">Другое</option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <legend id="q2">2. Ваш пол</legend>
+        <div class="options">
+          <input type="radio" id="gender_male" name="gender" value="Мужской" required>
+          <label for="gender_male" id="gender_male_label">Мужской</label>
+          <input type="radio" id="gender_female" name="gender" value="Женский">
+          <label for="gender_female" id="gender_female_label">Женский</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend id="q3">3. Возраст</legend>
+        <div class="options">
+          <input type="radio" id="age_20_35" name="age" value="20-35" required>
+          <label for="age_20_35" id="age_20_35_label">20-35</label>
+          <input type="radio" id="age_35_45" name="age" value="35-45">
+          <label for="age_35_45" id="age_35_45_label">35-45</label>
+          <input type="radio" id="age_45_plus" name="age" value="45+">
+          <label for="age_45_plus" id="age_45_plus_label">45+</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend id="q4">4. Вы были в походе с детьми?</legend>
+        <div class="options">
+          <input type="radio" id="with_children_yes" name="with_children" value="Да" required>
+          <label for="with_children_yes" id="with_children_yes_label">Да</label>
+          <input type="radio" id="with_children_no" name="with_children" value="Нет">
+          <label for="with_children_no" id="with_children_no_label">Нет</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend id="q5">5. Как вы узнали про Геопарк Арал?</legend>
+        <div class="options">
+          <input type="radio" id="source_friends" name="source" value="От друзей" required>
+          <label for="source_friends" id="source_friends_label">От друзей</label>
+          <input type="radio" id="source_online" name="source" value="Из интернета">
+          <label for="source_online" id="source_online_label">Из интернета</label>
+          <input type="radio" id="source_onplace" name="source" value="На месте">
+          <label for="source_onplace" id="source_onplace_label">На месте</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend id="q6">6. Путешествуете как?</legend>
+        <div class="options">
+          <input type="radio" id="travel_group" name="travel_mode" value="В составе группы" required>
+          <label for="travel_group" id="travel_group_label">В составе группы</label>
+          <input type="radio" id="travel_self" name="travel_mode" value="Самостоятельно">
+          <label for="travel_self" id="travel_self_label">Самостоятельно</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend id="q7">7. На сколько дней?</legend>
+        <div class="options">
+          <input type="radio" id="days_1_3" name="days" value="1-3 дней" required>
+          <label for="days_1_3" id="days_1_3_label">1-3 дней</label>
+          <input type="radio" id="days_3_5" name="days" value="3-5 дней">
+          <label for="days_3_5" id="days_3_5_label">3-5 дней</label>
+          <input type="radio" id="days_5_10" name="days" value="5-10 дней">
+          <label for="days_5_10" id="days_5_10_label">5-10 дней</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend id="q8">8. Условия предпочтительны?</legend>
+        <div class="options">
+          <input type="radio" id="acc_comfort" name="accommodation" value="Комфортабельные" required>
+          <label for="acc_comfort" id="acc_comfort_label">Комфортабельные</label>
+          <input type="radio" id="acc_camping" name="accommodation" value="Кемпинг">
+          <label for="acc_camping" id="acc_camping_label">Кемпинг</label>
+          <input type="radio" id="acc_any" name="accommodation" value="Неважно">
+          <label for="acc_any" id="acc_any_label">Неважно</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend id="q9">9. Предложения</legend>
+        <textarea id="suggestions" name="suggestions" placeholder="Ваши комментарии... (необязательно)"></textarea>
+      </fieldset>
+
+      <button type="submit">Отправить</button>
+    </form>
+  </div>
+
+  <script>
+    function switchLanguage() {
+      const textElements = {
+        "survey-title": {
+          "ru": "Опрос посетителей Геопарка Арал",
+          "en": "Visitor Survey Results of Arai Geopark"
+        },
+        "q1": {
+          "ru": "1. Откуда вы? Страна",
+          "en": "1. Where are you from? Country"
+        },
+        "q2": {
+          "ru": "2. Ваш пол",
+          "en": "2. Your gender"
+        },
+        "q3": {
+          "ru": "3. Возраст",
+          "en": "3. Age"
+        },
+        "q4": {
+          "ru": "4. Вы были в походе с детьми?",
+          "en": "4. Have you been hiking with children?"
+        },
+        "q5": {
+          "ru": "5. Как вы узнали про Геопарк Арал?",
+          "en": "5. How did you learn about Arai Geopark?"
+        },
+        "q6": {
+          "ru": "6. Путешествуете как?",
+          "en": "6. How do you travel?"
+        },
+        "q7": {
+          "ru": "7. На сколько дней?",
+          "en": "7. How many days?"
+        },
+        "q8": {
+          "ru": "8. Условия предпочтительны?",
+          "en": "8. Preferred conditions?"
+        },
+        "q9": {
+          "ru": "9. Предложения",
+          "en": "9. Suggestions"
+        },
+        "gender_male_label": {
+          "ru": "Мужской",
+          "en": "Male"
+        },
+        "gender_female_label": {
+          "ru": "Женский",
+          "en": "Female"
+        },
+        "age_20_35_label": {
+          "ru": "20-35",
+          "en": "20-35"
+        },
+        "age_35_45_label": {
+          "ru": "35-45",
+          "en": "35-45"
+        },
+        "age_45_plus_label": {
+          "ru": "45+",
+          "en": "45+"
+        },
+        "with_children_yes_label": {
+          "ru": "Да",
+          "en": "Yes"
+        },
+        "with_children_no_label": {
+          "ru": "Нет",
+          "en": "No"
+        },
+        "source_friends_label": {
+          "ru": "От друзей",
+          "en": "From friends"
+        },
+        "source_online_label": {
+          "ru": "Из интернета",
+          "en": "From the internet"
+        },
+        "source_onplace_label": {
+          "ru": "На месте",
+          "en": "On the spot"
+        },
+        "travel_group_label": {
+          "ru": "В составе группы",
+          "en": "In a group"
+        },
+        "travel_self_label": {
+          "ru": "Самостоятельно",
+          "en": "Independently"
+        },
+        "days_1_3_label": {
+          "ru": "1-3 дней",
+          "en": "1-3 days"
+        },
+        "days_3_5_label": {
+          "ru": "3-5 дней",
+          "en": "3-5 days"
+        },
+        "days_5_10_label": {
+          "ru": "5-10 дней",
+          "en": "5-10 days"
+        },
+        "acc_comfort_label": {
+          "ru": "Комфортабельные",
+          "en": "Comfortable"
+        },
+        "acc_camping_label": {
+          "ru": "Кемпинг",
+          "en": "Camping"
+        },
+        "acc_any_label": {
+          "ru": "Неважно",
+          "en": "Doesn't matter"
+        },
+        "countries": {
+          "ru": [
+            "Азербайджан", "Армения", "Беларусь", "Казахстан", "Кыргызстан", "Молдова", 
+            "Россия", "Таджикистан", "Туркменистан", "Узбекистан", "Украина", "Эстония", 
+            "Латвия", "Литва", "Грузия", "Другое"
+          ],
+          "en": [
+            "Azerbaijan", "Armenia", "Belarus", "Kazakhstan", "Kyrgyzstan", "Moldova", 
+            "Russia", "Tajikistan", "Turkmenistan", "Uzbekistan", "Ukraine", "Estonia", 
+            "Latvia", "Lithuania", "Georgia", "Other"
+          ]
+        }
+      };
+
+      const language = document.querySelector('.language-switcher').textContent.trim().toLowerCase() === 'en' ? 'en' : 'ru';
+
+      // Переключаем язык на странице
+      for (const [key, value] of Object.entries(textElements)) {
+        if (key === "countries") {
+          // Обновляем список стран
+          const countrySelect = document.getElementById("country");
+          countrySelect.innerHTML = ""; // Очищаем текущие опции
+          value[language].forEach(country => {
+            const option = document.createElement("option");
+            option.textContent = country;
+            option.value = country;
+            countrySelect.appendChild(option);
+          });
+        } else {
+          document.getElementById(key).textContent = value[language];
+        }
+      }
+
+      // Меняем текст кнопки на переключение языка
+      document.querySelector('.language-switcher').textContent = language === 'en' ? 'RU' : 'EN';
+    }
+  </script>
+
+</body>
+</html>
